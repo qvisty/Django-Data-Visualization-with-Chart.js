@@ -22,14 +22,14 @@ def index(request):
     return render(request, "dashboard/index.html", context)
 
 
-def index2(request):
+def indexAll(request):
     data = Freetime.objects.all().order_by("department", "-days")
     if request.method == "POST":
         form = FreetimeForm(request.POST)
         if form.is_valid():
             form.save()
-            index2_url = reverse("index2")
-            return redirect(index2_url)
+            indexAll_url = reverse("indexAll")
+            return redirect(indexAll_url)
     else:
         form = FreetimeForm()
     context = {
@@ -39,18 +39,85 @@ def index2(request):
     }
     return render(request, "dashboard/index2.html", context)
 
+
 def indexA(request):
-    data = Freetime.objects.all().order_by("department", "-days")
+    department = "A"
+    data = Freetime.objects.filter(department__iexact=department).order_by(
+        "department", "-days"
+    )
     if request.method == "POST":
         form = FreetimeForm(request.POST)
         if form.is_valid():
             form.save()
-            index2_url = reverse("index2")
-            return redirect(index2_url)
+            indexAll_url = reverse("indexA")
+            return redirect(indexAll_url)
     else:
         form = FreetimeForm()
     context = {
         "data": data,
         "form": form,
+        "department": department,
+    }
+    return render(request, "dashboard/index2.html", context)
+
+
+def indexB(request):
+    department = "B"
+    data = Freetime.objects.filter(department__iexact=department).order_by(
+        "department", "-days"
+    )
+    if request.method == "POST":
+        form = FreetimeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            indexAll_url = reverse("indexB")
+            return redirect(indexAll_url)
+    else:
+        form = FreetimeForm()
+    context = {
+        "data": data,
+        "form": form,
+        "department": department,
+    }
+    return render(request, "dashboard/index2.html", context)
+
+
+def indexH(request):
+    department = "H"
+    data = Freetime.objects.filter(department__iexact=department).order_by(
+        "department", "-days"
+    )
+    if request.method == "POST":
+        form = FreetimeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            indexAll_url = reverse("indexH")
+            return redirect(indexAll_url)
+    else:
+        form = FreetimeForm()
+    context = {
+        "data": data,
+        "form": form,
+        "department": department,
+    }
+    return render(request, "dashboard/index2.html", context)
+
+def indexNull(request):
+    department = ""
+    data = Freetime.objects.filter(department__iexact=department).order_by(
+        "department", "-days"
+    )
+    if request.method == "POST":
+        form = FreetimeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            indexAll_url = reverse("indexNull")
+            return redirect(indexAll_url)
+    else:
+        form = FreetimeForm()
+    context = {
+        "data": data,
+        "form": form,
+        "department": "No",
     }
     return render(request, "dashboard/index2.html", context)

@@ -3,5 +3,9 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="dashboard-index"),
-    path("index2", views.index2, name="index2"),
+    path("indexAll", views.indexAll, name="indexAll"),
+    path("indexA", views.indexA, name="indexA"),
+    path("indexB", views.indexB, name="indexB"),
+    path("indexH", views.indexH, name="indexH"),
+    path("indexNull", views.indexNull, name="indexNull"),
 ]
