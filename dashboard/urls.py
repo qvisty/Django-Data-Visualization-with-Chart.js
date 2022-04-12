@@ -8,4 +8,6 @@ urlpatterns = [
     path("indexB", views.indexB, name="indexB"),
     path("indexH", views.indexH, name="indexH"),
     path("indexNull", views.indexNull, name="indexNull"),
+    path("excel", views.add_from_xlsx, name="excel"),
+
 ]

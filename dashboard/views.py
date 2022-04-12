@@ -102,6 +102,7 @@ def indexH(request):
     }
     return render(request, "dashboard/index2.html", context)
 
+
 def indexNull(request):
     department = ""
     data = Freetime.objects.filter(department__iexact=department).order_by(
@@ -121,3 +122,19 @@ def indexNull(request):
         "department": "No",
     }
     return render(request, "dashboard/index2.html", context)
+
+
+def add_from_xlsx(request):
+    import pandas as pd
+
+    file = "dage.xlsx"
+    df = pd.read_excel(file, usecols=["Navn", "Dage", "Afdeling"])
+    print(df.head())
+    df["Dage"] = df["Dage"].astype(int)
+    print(df.info())
+    data = df
+
+    context = {
+        "data": data,
+    }
+    return render(request, "dashboard/excel.html", context)

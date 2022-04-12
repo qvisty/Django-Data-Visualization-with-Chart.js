@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-sm"><h1>Excel</h1></div>
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Data:</h5>
+            <p class="card-text">{{data}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
