@@ -153,16 +153,15 @@ from django.core.files.storage import FileSystemStorage
 def Import_csv(request):
     import os
 
-    print("s")
-    try:
-        if request.method == "POST" and request.FILES["myfile"]:
+    if request.method == "POST" and request.FILES["myfile"]:
+        try:
 
             myfile = request.FILES["myfile"]
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
             uploaded_file_url = fs.url(filename)
             excel_file = uploaded_file_url
-            empexceldata = pd.read_excel("." + excel_file)  # ,encoding='utf-8'
+            empexceldata = pd.read_excel("." + excel_file)
             dbframe = empexceldata
             Employee.objects.all().delete()
             for dbframe in dbframe.itertuples():
@@ -171,14 +170,12 @@ def Import_csv(request):
                     days=dbframe.Dage,
                     department=dbframe.Afdeling,
                 )
-                print(f"Created: {obj}")
                 obj.save()
 
             import os
 
             if os.path.exists("." + excel_file):
                 os.remove("." + excel_file)
-                print("." + excel_file, "deleted")
             else:
                 print("The file does not exist")
 
@@ -187,7 +184,7 @@ def Import_csv(request):
                 "dashboard/importexcel.html",
                 {"uploaded_file_url": uploaded_file_url, "data": dbframe},
             )
-    except Exception as identifier:
-        print(identifier)
+        except Exception as identifier:
+            print(identifier)
 
     return render(request, "dashboard/importexcel.html", {})
