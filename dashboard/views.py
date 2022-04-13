@@ -104,7 +104,7 @@ def indexH(request):
 
 
 def indexNull(request):
-    department = ""
+    department = "Ingen"
     data = Freetime.objects.filter(department__iexact=department).order_by(
         "department", "-days"
     )
@@ -162,11 +162,12 @@ def Import_csv(request):
             uploaded_file_url = fs.url(filename)
             excel_file = uploaded_file_url
             empexceldata = pd.read_excel("." + excel_file)
-            dbframe = empexceldata
-            Employee.objects.all().delete()
+            df = empexceldata.fillna("Ingen")
+            dbframe = df
+            Freetime.objects.all().delete()
             for dbframe in dbframe.itertuples():
-                obj = Employee.objects.create(
-                    firstName=dbframe.Navn,
+                obj = Freetime.objects.create(
+                    name=dbframe.Navn,
                     days=dbframe.Dage,
                     department=dbframe.Afdeling,
                 )

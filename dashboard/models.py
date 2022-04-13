@@ -26,16 +26,3 @@ class Freetime(models.Model):
         return f"{self.department}:{self.name}-{self.days}"
 
 
-from django.db import models
-from django import forms
-
-
-class Employee(models.Model):
-    days = models.IntegerField()
-    firstName = models.CharField(max_length=150, null=True)
-    department = models.CharField(max_length=100, default="", blank=True, null=True)
-
-    def __str__(self):
-        return self.firstName
-
-    objects = models.Manager()
