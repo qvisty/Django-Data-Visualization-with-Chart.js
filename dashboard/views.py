@@ -128,13 +128,66 @@ def add_from_xlsx(request):
     import pandas as pd
 
     file = "dage.xlsx"
-    df = pd.read_excel(file, usecols=["Navn", "Dage", "Afdeling"])
+    df = pd.read_excel(file)
+    df = df.fillna("Ingen")
+    afdelinger = df.Afdeling.unique()
     print(df.head())
-    df["Dage"] = df["Dage"].astype(int)
     print(df.info())
-    data = df
+    headers = ["Navn", "Dage", "Afdeling"]
+    data = df.to_dict()
 
     context = {
         "data": data,
+        "afdelinger": afdelinger,
+        "headers": headers,
     }
     return render(request, "dashboard/excel.html", context)
+
+
+from .models import Employee
+import pandas as pd
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+
+
+def Import_csv(request):
+    import os
+
+    print("s")
+    try:
+        if request.method == "POST" and request.FILES["myfile"]:
+
+            myfile = request.FILES["myfile"]
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+            excel_file = uploaded_file_url
+            empexceldata = pd.read_excel("." + excel_file)  # ,encoding='utf-8'
+            dbframe = empexceldata
+            Employee.objects.all().delete()
+            for dbframe in dbframe.itertuples():
+                obj = Employee.objects.create(
+                    firstName=dbframe.Navn,
+                    days=dbframe.Dage,
+                    department=dbframe.Afdeling,
+                )
+                print(f"Created: {obj}")
+                obj.save()
+
+            import os
+
+            if os.path.exists("." + excel_file):
+                os.remove("." + excel_file)
+                print("." + excel_file, "deleted")
+            else:
+                print("The file does not exist")
+
+            return render(
+                request,
+                "dashboard/importexcel.html",
+                {"uploaded_file_url": uploaded_file_url, "data": dbframe},
+            )
+    except Exception as identifier:
+        print(identifier)
+
+    return render(request, "dashboard/importexcel.html", {})

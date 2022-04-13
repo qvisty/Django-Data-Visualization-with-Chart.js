@@ -5,13 +5,30 @@
 {% block content %}
 <div class="container-sm"><h1>Excel</h1></div>
 
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Data:</h5>
-            <p class="card-text">{{data}}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">{{ headers.0 }}</th>
+      <th scope="col">{{ headers.1 }}</th>
+      <th scope="col">{{ headers.2 }}</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for r in data|slice:1 %}
+    <tr>
+      <th scope="row">{{ r }}</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    {% endfor %}
+    
+  </tbody>
+</table>
+{{ data }}
+{% for afd in afdelinger %}
+<h2>{{ afd }}</h2>
+{% endfor %}
+    
 </div>
 
 
